@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { Rect, Patchlyor } from '@patchly/editor';
+import type { Rect, PatchlyEditor } from '@patchly/editor';
 import Icon from './Icon.vue';
 
-const props = defineProps<{ editor: Patchlyor; rect: Rect }>();
+const props = defineProps<{ editor: PatchlyEditor; rect: Rect }>();
 
 const style = computed(() => {
   const w = 230;

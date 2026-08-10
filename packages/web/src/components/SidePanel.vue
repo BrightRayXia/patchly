@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import type { Change } from '@patchly/core';
-import type { Patchlyor } from '@patchly/editor';
+import type { PatchlyEditor } from '@patchly/editor';
 import Icon from './Icon.vue';
 import { loadSettings, PRESETS, saveSettings, type LLMSettings } from '../services/settings';
 import { requestPatches } from '../services/llm';
@@ -12,7 +12,7 @@ export type SideTab = 'ai' | 'settings' | 'changes';
 const props = defineProps<{
   open: boolean;
   tab: SideTab;
-  editor: Patchlyor | null;
+  editor: PatchlyEditor | null;
   selected: Element | null;
   selectedPath: string;
   hasDoc: boolean;
@@ -22,7 +22,21 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:open', v: boolean): void;
   (e: 'update:tab', v: SideTab): void;
+  (e: 'notify', msg: string): void;
 }>();
+
+/** 点击变更记录：滚动定位到画布对应元素并闪烁高亮，同时选中它 */
+function jumpTo(c: Change): void {
+  if (!c.el || !props.editor) {
+    emit('notify', '该元素已被删除，无法定位');
+    return;
+  }
+  c.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  flashElements([c.el]);
+  props.editor.pickBlock(c.el);
+  // 等平滑滚动结束后重算浮层位置
+  setTimeout(() => props.editor?.reposition(), 450);
+}
 
 const settings = reactive<LLMSettings>(loadSettings());
 const instruction = ref('');
@@ -169,12 +183,20 @@ function iconFor(kind: Change['kind']): string {
           还没有修改。改动会对比打开时的原文自动记录（新增后又删除的不算）。
         </div>
         <ul v-else class="changelist">
-          <li v-for="(c, i) in changes" :key="i" :class="c.kind">
+          <li
+            v-for="(c, i) in changes"
+            :key="i"
+            :class="c.kind"
+            role="button"
+            :title="c.el ? '点击定位到该元素' : '已删除，无法定位'"
+            @click="jumpTo(c)"
+          >
             <span class="ic"><Icon :name="iconFor(c.kind)" :size="13" /></span>
             <div style="flex: 1; min-width: 0">
               <code>{{ c.path }}</code>
               <p>{{ c.detail }}</p>
             </div>
+            <Icon v-if="c.el" name="locate" :size="13" class="locate-ic" />
           </li>
         </ul>
       </template>

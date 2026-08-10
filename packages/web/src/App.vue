@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { cssPath, type DiffResult } from '@patchly/core';
-import { Patchlyor, type BlankInfo, type OverlayState, type Rect } from '@patchly/editor';
+import { PatchlyEditor, type BlankInfo, type OverlayState, type Rect } from '@patchly/editor';
 import Icon from './components/Icon.vue';
 import TopBar from './components/TopBar.vue';
 import OverlayBox from './components/OverlayBox.vue';
@@ -14,7 +14,7 @@ import ToastBox from './components/Toast.vue';
 
 const iframeRef = ref<HTMLIFrameElement | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
-let editor: Patchlyor | null = null;
+let editor: PatchlyEditor | null = null;
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
 const fileName = ref('');
@@ -81,7 +81,7 @@ function refreshChanges(): void {
 }
 
 onMounted(() => {
-  editor = new Patchlyor({ iframe: iframeRef.value! });
+  editor = new PatchlyEditor({ iframe: iframeRef.value! });
   editor.on('dirty', ({ dirty: d }) => (dirty.value = d));
   editor.on('history', ({ canUndo: u, canRedo: r }) => {
     canUndo.value = u;
@@ -399,6 +399,7 @@ window.addEventListener('beforeunload', onBeforeUnload);
       :changes="changes?.changes ?? null"
       @update:open="panelOpen = $event"
       @update:tab="panelTab = $event"
+      @notify="showToast"
     />
     <ToastBox :message="toastMsg" />
   </div>

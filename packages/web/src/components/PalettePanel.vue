@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { Rect, Patchlyor } from '@patchly/editor';
+import type { Rect, PatchlyEditor } from '@patchly/editor';
 import Icon from './Icon.vue';
 
-const props = defineProps<{ editor: Patchlyor; target: Element; rect: Rect | null }>();
+const props = defineProps<{ editor: PatchlyEditor; target: Element; rect: Rect | null }>();
 const emit = defineEmits<{ (e: 'close'): void }>();
 
 const SWATCH = [

@@ -31,7 +31,7 @@ export interface BlankInfo {
   textLen: number;
 }
 
-export interface PatchlyorOptions {
+export interface PatchlyEditorOptions {
   iframe: HTMLIFrameElement;
 }
 
@@ -60,7 +60,7 @@ const NON_TEXT_TAGS = new Set([
 ]);
 
 /**
- * Patchlyor 编辑器引擎。
+ * PatchlyEditor 编辑器引擎。
  *
  * 职责：iframe 画布生命周期、文档内交互（hover/点击/双击/选区/粘贴）、
  * 文字编辑会话、块级操作、撤销/重做、序列化。
@@ -68,7 +68,7 @@ const NON_TEXT_TAGS = new Set([
  * 与框架无关：UI 层（Vue/React/原生）只负责渲染与监听事件，
  * 引擎通过事件向外暴露「元素 → 视口矩形」等几何信息，由 UI 定位浮层。
  */
-export class Patchlyor {
+export class PatchlyEditor {
   readonly iframe: HTMLIFrameElement;
 
   private rawOriginal = '';
@@ -92,7 +92,7 @@ export class Patchlyor {
   private commitTimer: ReturnType<typeof setTimeout> | null = null;
   private listeners = new Map<keyof EditorEventMap, Set<(payload: unknown) => void>>();
 
-  constructor(opts: PatchlyorOptions) {
+  constructor(opts: PatchlyEditorOptions) {
     this.iframe = opts.iframe;
     this.iframe.addEventListener('load', () => this.onFrameLoad());
   }

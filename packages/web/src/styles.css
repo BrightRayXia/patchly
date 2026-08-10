@@ -1181,6 +1181,21 @@ iframe#view {
   padding: 8px 10px;
   font-size: 12px;
   color: var(--text-2);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.changelist li:hover {
+  background: #fff;
+  border-color: var(--border-strong);
+}
+.changelist li .locate-ic {
+  flex-shrink: 0;
+  align-self: center;
+  color: var(--text-3);
+  transition: color 0.12s;
+}
+.changelist li:hover .locate-ic {
+  color: var(--primary-strong);
 }
 .changelist li .ic {
   flex-shrink: 0;

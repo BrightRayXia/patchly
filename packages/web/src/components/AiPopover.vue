@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { cssPath } from '@patchly/core';
-import type { Rect, Patchlyor } from '@patchly/editor';
+import type { Rect, PatchlyEditor } from '@patchly/editor';
 import Icon from './Icon.vue';
 import { requestPatches } from '../services/llm';
 import { loadSettings, type LLMSettings } from '../services/settings';
 import { flashElements } from '../utils/flash';
 
-const props = defineProps<{ editor: Patchlyor; target: Element; rect: Rect }>();
+const props = defineProps<{ editor: PatchlyEditor; target: Element; rect: Rect }>();
 const emit = defineEmits<{ (e: 'close'): void }>();
 
 const settings = reactive<LLMSettings>(loadSettings());

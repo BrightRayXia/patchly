@@ -17,7 +17,7 @@
  *   - get_patch_preview { patches } → { diff }              应用前的变更预览
  *
  * 实现要点：
- *   1. 复用 @patchly/editor 的 Patchlyor，headless 跑在本地无头浏览器（Playwright）中；
+ *   1. 复用 @patchly/editor 的 PatchlyEditor，headless 跑在本地无头浏览器（Playwright）中；
  *   2. 通过 WebSocket 与浏览器内的编辑器实例通信（画布变化实时推给 Agent 与用户）；
  *   3. 所有工具产出与 Web 端同源的 Patch 记录，天然可审计、可撤销。
  *
