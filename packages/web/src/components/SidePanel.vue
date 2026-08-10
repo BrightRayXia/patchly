@@ -207,6 +207,7 @@ function iconFor(kind: Change['kind']): string {
             v-model="settings.proxyUrl"
             placeholder="https://patchly-proxy.你的子域.workers.dev"
           />
+          <span style="font-size: 11.5px; color: var(--text-3)">示例：https://patchly-proxy.1092728665.workers.dev</span>
         </div>
         <button class="btn-main" @click="save"><Icon name="check" :size="14" />保存配置</button>
         <p style="color: var(--text-3); font-size: 12px; line-height: 1.7">

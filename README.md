@@ -57,7 +57,8 @@ Patchly 是纯静态前端（Vite 构建产物在 `packages/web/dist`），可�
 
 > 说明：`vite.config.ts` 已设 `base: './'`，产物用相对路径，两种托管都能直接跑。
 > AI 修改功能需要用户在「设置」里自配 API Key（存浏览器 localStorage）；
-> 若目标 API 不允许浏览器跨域，可后续加一个 Cloudflare Worker 代理（见路线图）。
+> 部分 API（如 OpenAI）不允许浏览器跨域，仓库已内置 **Cloudflare Worker CORS 代理**（`proxy/`），
+> 按 `proxy/README.md` 部署后，把地址填进「设置 → CORS 代理地址」即可。
 
 ## 架构一览
 
