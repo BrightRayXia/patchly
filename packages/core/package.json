@@ -1,0 +1,26 @@
+{
+  "name": "@patchly/core",
+  "version": "0.1.0",
+  "description": "Patchly 核心：Patch 编辑模型（编辑 = 生成补丁）、撤销历史、HTML 工具",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "happy-dom": "^15.11.7",
+    "typescript": "^5.5.4",
+    "vitest": "^3.0.5"
+  },
+  "license": "MIT"
+}

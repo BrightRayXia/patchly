@@ -1,0 +1,7 @@
+name = "patchly-proxy"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+# 允许代理的上游地址白名单（逗号分隔）
+ALLOWED_UPSTREAMS = "https://api.openai.com/v1,https://api.deepseek.com/v1,https://api.moonshot.cn/v1"

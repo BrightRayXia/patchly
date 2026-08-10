@@ -1,0 +1,19 @@
+{
+  "name": "@patchly/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Patchly MCP Server（WIP）：让 Claude Code / Cursor 等 AI 编程代理通过工具调用驱动可视化编辑器",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@patchly/core": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.5.4"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@patchly/editor",
+  "version": "0.1.0",
+  "description": "Patchly 编辑器引擎：iframe 画布、可视化交互、文字/块操作（框架无关，可被 Web / 浏览器插件 / MCP 复用）",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@patchly/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  },
+  "license": "MIT"
+}

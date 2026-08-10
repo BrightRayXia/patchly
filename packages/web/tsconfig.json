@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@patchly/core": ["../core/src/index.ts"],
+      "@patchly/editor": ["../editor/src/index.ts"]
+    },
+    "types": ["vite/client"]
+  },
+  "include": ["src"]
+}

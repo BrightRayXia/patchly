@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patchly 演示页</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f8f7fc; color: #2a2744; }
+  .hero { background: linear-gradient(135deg, #1e1b4b, #4338ca); color: #fff; padding: 64px 32px; text-align: center; }
+  .hero h1 { font-size: 40px; letter-spacing: 2px; margin-bottom: 12px; }
+  .hero p { color: #c7d2fe; font-size: 16px; }
+  .hero .badge { display: inline-block; margin-top: 20px; background: #ea580c; color: #fff; padding: 8px 20px; border-radius: 999px; font-size: 14px; }
+  .cards { display: flex; gap: 24px; justify-content: center; padding: 48px 24px; flex-wrap: wrap; }
+  .card { background: #fff; border-radius: 16px; padding: 28px 24px; width: 240px; box-shadow: 0 12px 32px rgba(30,27,75,.08); text-align: center; }
+  .card .emoji { font-size: 40px; }
+  .card h3 { margin: 12px 0 8px; font-size: 18px; }
+  .card p { font-size: 13px; color: #6b6b80; line-height: 1.7; }
+  .footer { text-align: center; padding: 32px; color: #9c9cb0; font-size: 13px; }
+</style>
+</head>
+<body>
+  <section class="hero">
+    <h1>让 AI 写，我来改</h1>
+    <p>这是 AI 生成的示例页面。试试在编辑器中点击文字直接修改、选中元素换色、删除或复制卡片。</p>
+    <span class="badge">Patchly 演示</span>
+  </section>
+
+  <section class="cards">
+    <div class="card">
+      <div class="emoji">🚀</div>
+      <h3>快速</h3>
+      <p>拖入 HTML 即改，简单调整不需要重新麻烦 AI，也不消耗 token。</p>
+    </div>
+    <div class="card">
+      <div class="emoji">🎨</div>
+      <h3>可视化</h3>
+      <p>点击选中元素，改颜色、字号、间距，所见即所得。</p>
+    </div>
+    <div class="card">
+      <div class="emoji">🤖</div>
+      <h3>AI 协作</h3>
+      <p>复杂修改交给 AI 助手：选中元素，说一句人话即可生成修改。</p>
+    </div>
+  </section>
+
+  <footer class="footer">由 AI 生成 · 用 Patchly 微调 · MIT License</footer>
+</body>
+</html>
