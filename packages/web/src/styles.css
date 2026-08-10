@@ -1073,6 +1073,19 @@ iframe#view {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+}
+#aiPopover .grip {
+  color: var(--text-3);
+}
+#aiPopover .head:hover .grip {
+  color: var(--primary-strong);
+}
+body.dragging-popover {
+  user-select: none;
+  cursor: move;
 }
 #aiPopover .tt {
   display: inline-flex;

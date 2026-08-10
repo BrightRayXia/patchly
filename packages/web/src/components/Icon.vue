@@ -42,6 +42,7 @@ const ICONS: Record<string, string> = {
   list: '<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',
   locate:
     '<circle cx="12" cy="12" r="10"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M12 6V2"/><path d="M12 22v-4"/>',
+  grip: '<path d="M9 12h.01"/><path d="M9 18h.01"/><path d="M9 6h.01"/><path d="M15 12h.01"/><path d="M15 18h.01"/><path d="M15 6h.01"/>',
   chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
 };
 
