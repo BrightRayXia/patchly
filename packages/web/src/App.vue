@@ -82,6 +82,10 @@ function refreshChanges(): void {
 
 onMounted(() => {
   editor = new PatchlyEditor({ iframe: iframeRef.value! });
+  // 开发调试钩子：浏览器控制台可直接操作编辑器实例
+  if (import.meta.env.DEV) {
+    (window as unknown as Record<string, unknown>).__patchlyEditor = editor;
+  }
   editor.on('dirty', ({ dirty: d }) => (dirty.value = d));
   editor.on('history', ({ canUndo: u, canRedo: r }) => {
     canUndo.value = u;

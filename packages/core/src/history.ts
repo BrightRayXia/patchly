@@ -26,13 +26,24 @@ export class PatchHistory {
     private max = 50,
   ) {}
 
-  /** 应用 patches 并记录（标准路径：块操作、AI 生成的 Patch） */
-  applyAndRecord(patches: Patch[]): void {
+  /**
+   * 应用 patches 并记录（标准路径：块操作、AI 生成的 Patch）。
+   * forwardReplay：可选的重放版本（通常是把 Element 目标序列化为 CSS 选择器），
+   * 供「干净导出」在全新文档上按顺序重放用户修改使用。
+   */
+  applyAndRecord(patches: Patch[], forwardReplay?: Patch[]): void {
     const backward = applyBatch(this.doc, patches);
     if (backward.length === 0) return; // 全部无操作，不产生历史
-    this.undoStack.push({ forward: patches, backward });
+    this.undoStack.push({ forward: forwardReplay ?? patches, backward });
     this.trim();
     this.redoStack = [];
+  }
+
+  /** 按时间顺序展开所有已应用修改的 forward，用于在干净文档上重放（见 PatchlyEditor.prepareExport） */
+  replayPatches(): Patch[] {
+    const out: Patch[] = [];
+    for (const entry of this.undoStack) out.push(...entry.forward);
+    return out;
   }
 
   /** 变更已由外部应用（如 contenteditable 文字编辑会话），仅登记两个方向 */

@@ -62,7 +62,7 @@ function computeStyles(el: Element): string {
   const win = el.ownerDocument.defaultView;
   if (!win) return '';
   const cs = win.getComputedStyle(el);
-  const pick = ['color', 'backgroundColor', 'fontSize', 'fontWeight', 'textAlign', 'padding', 'margin', 'borderRadius'];
+  const pick = ['color', 'backgroundColor', 'fontSize', 'fontWeight', 'textAlign', 'padding', 'margin', 'borderRadius', 'display', 'position', 'float', 'transform', 'lineHeight', 'justifyContent', 'alignItems'];
   return pick.map((k) => `${k}: ${cs.getPropertyValue(k)}`).join('; ');
 }
 
@@ -90,6 +90,11 @@ async function generate(): Promise<void> {
       targetStyles: computeStyles(props.selected),
     });
     const applied = props.editor.patch(patches);
+    if (applied.length === 0) {
+      status.value = '修改未命中任何元素，未生效。请换一种说法重试，或先在画布上重新选中目标。';
+      statusKind.value = 'err';
+      return;
+    }
     flashElements(applied);
     status.value = `已应用 ${applied.length} 个修改（可撤销）`;
     statusKind.value = 'ok';

@@ -2,6 +2,8 @@ import {
   type Patch,
   PatchHistory,
   applyBatch,
+  applyPatch,
+  cssPath,
   diffDocuments,
   hasScript,
   inlineImagesInDoc,
@@ -83,6 +85,8 @@ export class PatchlyEditor {
   private scriptMode = false;
   /** 编辑模式下是否允许脚本运行（多页 / 翻页 / 轮播类文件需要，见 README） */
   private allowScripts = false;
+  /** 会话中是否启用过脚本：导出时需要走「原文 + 重放」以剔除脚本动态注入的内容 */
+  private scriptsUsed = false;
   private dirty = false;
 
   private picked: Element | null = null;
@@ -164,6 +168,7 @@ export class PatchlyEditor {
   }
 
   setScriptMode(on: boolean): void {
+    if (on) this.scriptsUsed = true;
     this.scriptMode = on;
     this.deselect();
     this.render();
@@ -172,6 +177,7 @@ export class PatchlyEditor {
   /** 编辑模式下允许运行脚本（用于多页 / JS 渲染的内容），保持可编辑 */
   setAllowScripts(on: boolean): void {
     if (this.allowScripts === on) return;
+    if (on) this.scriptsUsed = true;
     this.allowScripts = on;
     this.deselect();
     this.render();
@@ -264,9 +270,19 @@ export class PatchlyEditor {
 
   async prepareExport(): Promise<{ html: string; inlined: number }> {
     this.endEdit();
-    let inlined = 0;
-    if (!this.scriptMode && this.vdoc) inlined = await inlineImagesInDoc(this.vdoc);
-    return { html: this.serialize(), inlined };
+    // 从未启用过脚本：直接序列化当前文档（结构 = 原文 + 用户修改，无脚本污染）
+    if (!this.scriptsUsed || !this.vdoc) {
+      let inlined = 0;
+      if (this.vdoc) inlined = await inlineImagesInDoc(this.vdoc);
+      return { html: this.serialize(), inlined };
+    }
+    // 启用过脚本：以「原文」为基准重建文档，只按顺序重放用户的实际修改。
+    // 避免把页面脚本动态插入的内容（如 deck 注入的主题按钮）固化进导出文件，
+    // 否则浏览器再次打开时脚本会再次注入，按钮越导越多。
+    const clean = new DOMParser().parseFromString(this.rawOriginal, 'text/html');
+    const replay = this.history?.replayPatches() ?? [];
+    for (const p of replay) applyPatch(clean, p);
+    return { html: serializeDoc(clean, this.doctype), inlined: 0 };
   }
 
   /* ---------------- 几何 ---------------- */
@@ -449,7 +465,7 @@ export class PatchlyEditor {
     const after = el.innerHTML;
     if (after !== this.editBeforeHTML && this.history) {
       this.history.record(
-        [{ type: 'set-html', target: el, html: after }],
+        this.selectorize([{ type: 'set-html', target: el, html: after }]),
         [{ type: 'set-html', target: el, html: this.editBeforeHTML }],
       );
       this.emitHistory();
@@ -523,12 +539,30 @@ export class PatchlyEditor {
       if (el) applied.push(el);
     }
     if (note) patches = patches.map((p) => ({ ...p, note }));
-    this.history.applyAndRecord(patches);
+    // 记录一份「选择器化」的重放版本，供干净导出在原文上重放用户修改
+    this.history.applyAndRecord(patches, this.selectorize(patches));
     this.emit('patched', { count: patches.length });
     this.emitHistory();
     this.commit();
     this.reposition();
     return applied;
+  }
+
+  /** 把 Patch 的 Element 目标转换为 CSS 选择器，使修改可在任意同构文档上重放 */
+  private selectorize(patches: Patch[]): Patch[] {
+    const out: Patch[] = [];
+    for (const p of patches) {
+      if ('target' in p && p.target && typeof p.target !== 'string') {
+        try {
+          out.push({ ...p, target: cssPath(p.target) });
+        } catch {
+          out.push(p);
+        }
+      } else {
+        out.push(p);
+      }
+    }
+    return out;
   }
 
   /** 当前文档相对原文的净变更（新增后又删除的不记录）。返回 null 表示暂无文档。 */
