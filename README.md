@@ -2,6 +2,8 @@
 
 > AI 生成的 HTML 的可视化微调工具 —— 「让 AI 写，我来改」，简单修改不花 token。
 
+**在线体验：[https://brightrayxia.github.io/patchly/](https://brightrayxia.github.io/patchly/)**
+
 经常让 AI 用 HTML 输出内容（落地页、演示稿、说明文档）？AI 生成的东西改起来很麻烦：一句话说不清要改哪里，来回调 prompt 既慢又费 token。
 
 **Patchly 的理念：把「改」这件事从 AI 手里拿回来。**
@@ -36,29 +38,8 @@ pnpm typecheck    # 全仓类型检查
 
 打开页面后，拖入 `examples/demo.html` 即可体验。
 
-## 在线部署
-
-Patchly 是纯静态前端（Vite 构建产物在 `packages/web/dist`），可部署到任何静态托管。
-
-**GitHub Pages（推荐，与开源仓库一体）**
-
-1. 把仓库推到 GitHub（仓库名建议 `patchly`）
-2. 已内置 GitHub Actions 工作流 `.github/workflows/deploy.yml`：推送到 `main` 时自动构建并发布到 Pages
-3. 到仓库 Settings → Pages → Source 选 **GitHub Actions**，完成后访问 `https://<你的用户名>.github.io/patchly/`
-
-**Cloudflare Pages（备选，国内访问更稳 / 无限免费构建）**
-
-1. 登录 Cloudflare Dashboard → Workers & Pages → Create → Connect to Git 仓库
-2. 构建配置：
-   - 构建命令：`pnpm --filter @patchly/web build`
-   - 输出目录：`packages/web/dist`
-   - 根目录：`/`
-3. 保存即自动部署，可绑定自定义域名
-
-> 说明：`vite.config.ts` 已设 `base: './'`，产物用相对路径，两种托管都能直接跑。
-> AI 修改功能需要用户在「设置」里自配 API Key（存浏览器 localStorage）；
-> 部分 API（如 OpenAI）不允许浏览器跨域，仓库已内置 **Cloudflare Worker CORS 代理**（`proxy/`），
-> 按 `proxy/README.md` 部署后，把地址填进「设置 → CORS 代理地址」即可。
+> AI 修改功能需要用户自配 API Key（存浏览器 localStorage）；部分 API 不允许浏览器跨域时，
+> 可部署仓库内的 Cloudflare Worker CORS 代理（`proxy/`，见其 README）并把地址填入「设置 → CORS 代理地址」。
 
 ## 架构一览
 
@@ -70,6 +51,7 @@ packages/
 ├─ editor/   # 框架无关的编辑器引擎：iframe 画布、交互事件、文字/块操作、序列化
 ├─ web/      # Vue 3 + Vite 应用：顶栏、画布、浮层工具条、AI 助手面板
 └─ mcp/      # MCP Server（规划中）：让 Claude Code / Cursor 等代理驱动编辑器
+proxy/       # 可选：Cloudflare Worker CORS 代理（解决部分 AI API 不允许浏览器跨域）
 ```
 
 设计文档见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
