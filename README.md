@@ -2,7 +2,7 @@
 
 > AI 生成的 HTML 的可视化微调工具 —— 「让 AI 写，我来改」，简单修改不花 token。
 
-**在线体验：[https://brightrayxia.github.io/patchly/](https://brightrayxia.github.io/patchly/)**
+**在线体验：https://ming-xia.github.io/patchly/**
 
 经常让 AI 用 HTML 输出内容（落地页、演示稿、说明文档）？AI 生成的东西改起来很麻烦：一句话说不清要改哪里，来回调 prompt 既慢又费 token。
 
